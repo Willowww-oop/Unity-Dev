@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
-    public float force = 10;
+    public float force = 60;
 
     void Start()
     {
         GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * force, ForceMode.VelocityChange); 
-    }
-
-    void Update()
-    {
-        
     }
 }
