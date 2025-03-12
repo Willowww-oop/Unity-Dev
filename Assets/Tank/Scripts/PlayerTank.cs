@@ -1,8 +1,9 @@
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerTank : MonoBehaviour, IDamagable
+public class PlayerTank : MonoBehaviour
 {
 
     public int ammo = 15;
@@ -11,15 +12,18 @@ public class PlayerTank : MonoBehaviour, IDamagable
     [SerializeField] Transform nozzle;
     [SerializeField] GameObject rocket;
     [SerializeField] TMP_Text ammoText;
+    [SerializeField] Slider healthSlider;
 
     float torque;
     float force;
 
     Rigidbody rb;
+    Destructable destructable;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        destructable = GetComponent<Destructable>();
     }
 
     void Update()
@@ -36,16 +40,17 @@ public class PlayerTank : MonoBehaviour, IDamagable
         }
 
         ammoText.text = "Ammo: " + ammo.ToString();
+
+        healthSlider.value = destructable.Health;
+        if (destructable.Health <= 0)
+        {
+            GameManager.Instance.SetGameOver();
+        }
     }
 
     private void FixedUpdate()
     {
         rb.AddRelativeForce(Vector3.forward * force);
         rb.AddRelativeTorque(Vector3.up * torque);
-    }
-
-    public void ApplyDamage(float damage)
-    {
-
     }
 }
